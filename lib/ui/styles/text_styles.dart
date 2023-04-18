@@ -1,6 +1,8 @@
 import 'package:flutter/rendering.dart';
 import 'package:calculator_app/ui/styles/color_styles.dart';
 
+//text style , size , color
+
 class UITextStyles {
   static TextStyle headerStyle = TextStyle(
       fontWeight: FontWeight.bold,

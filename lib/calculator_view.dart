@@ -12,46 +12,88 @@ class CalculatorHome extends StatefulWidget {
 }
 
 class _CalculatorHomeState extends State<CalculatorHome> {
+
+  var assetsImage = new AssetImage('images/icon.png');
+
+  //User input/output data information
   var userAsk = '';
   var userAnswer = '';
 
-  //button list
+  //calculator button list
   final List<String> buttons = [
     'C',
     'DEL',
-    '%',
-    '/',
+    '.',
+    '+',
+    '-',
     '9',
     '8',
     '7',
     '*',
-    '6',
-    '5',
+    '/',
     '4',
-    '-',
+    '5',
+    '6',
+    '(',
+    ')',
     '3',
     '2',
     '1',
-    '+',
-    '.',
     '0',
-    '()',
     '='
+
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // take the background color setting from color_styles.dart
       backgroundColor: UIColorStyles.background,
-      body: Column(
+        body: Column(
         children: [
           Expanded(
-              flex: 1,
+            flex:1,
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.asset(
+                  'images/icon.png',
+                  width: 50,
+                  height: 50,
+                ),
+                  Text(
+                    ' Calculator App',
+                    style: TextStyle(
+                      fontFamily: 'Lato',
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF6A5ACD),
+                      letterSpacing: 1.0,
+                      wordSpacing: 2.0,
+                      height: 1.5,
+                      shadows: [
+                        Shadow(
+                          blurRadius: 2.0,
+                          color: Colors.grey,
+                          offset: Offset(5.0, 1.0),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+              ),
+
+          Expanded(
+              flex: 2,
               child: Container(
                 child: calculateField(),
               )),
           Expanded(
-            flex: 2,
+            flex: 3,
             child: buildContainerButtonsField(),
           ),
         ],
@@ -59,14 +101,15 @@ class _CalculatorHomeState extends State<CalculatorHome> {
     );
   }
 
+  //button width setting
   Container buildContainerButtonsField() {
     return Container(
       child: GridView.builder(
           itemCount: buttons.length,
           gridDelegate:
-              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
+              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 5),
           itemBuilder: (BuildContext context, int index) {
-            // Clear Button
+            // Clear Number Button
             if (index == 0) {
               return CalculatorButton(
                 buttonTapped: () {
@@ -79,7 +122,7 @@ class _CalculatorHomeState extends State<CalculatorHome> {
                 color: UIColorStyles.GREEN_MODE,
               );
             }
-            // Delete Button
+            // Delete function
             else if (index == 1) {
               return CalculatorButton(
                 buttonTapped: () {
@@ -91,7 +134,7 @@ class _CalculatorHomeState extends State<CalculatorHome> {
                 color: UIColorStyles.RED_MODE,
               );
             }
-            // equal button
+            // Equal function
             else if (index == buttons.length - 1) {
               return CalculatorButton(
                 buttonTapped: () {
@@ -103,7 +146,7 @@ class _CalculatorHomeState extends State<CalculatorHome> {
                 color: UIColorStyles.DEEP_MODE,
               );
             }
-            // Normal buttons
+            // return button with different color
             else {
               return CalculatorButton(
                 buttonTapped: () {
@@ -113,11 +156,11 @@ class _CalculatorHomeState extends State<CalculatorHome> {
                 },
                 buttonText: buttons[index],
                 color: isOperator(buttons[index])
-                    ? Colors.deepOrange
-                    : Colors.deepOrange[50],
+                    ? Colors.black
+                    : Colors.white,
                 textColor: isOperator(buttons[index])
                     ? Colors.white
-                    : Colors.deepOrange,
+                    : Colors.black,
               );
             }
           }),
@@ -146,13 +189,15 @@ class _CalculatorHomeState extends State<CalculatorHome> {
     );
   }
 
+  //usual calculation setting
   bool isOperator(String x) {
     if (x == '%' || x == '/' || x == '*' || x == '-' || x == '+' || x == '=') {
-      return true;
+      return true; //answer
     }
-    return false;
+    return false;//non-result found
   }
 
+  //output after calculation
   void equalPressed() {
     String finalAsk = userAsk;
     Parser p = Parser();
